@@ -161,11 +161,8 @@ const MapComponent = (props) => {
           attribution={tileLayerProps.attribution}
           subdomains= {tileLayerProps.subdomains}
         />
-        <FullscreenControl position="topright" />
         <EditTools {...props} removeHandler={rH} />
         {features}
-        {props.heatmap ? heatmap(props) : points(props)}
-        {heatmap(props)}
         <div className="map-btn-group btn-group">
           {zoomButton}
           {removeAllButton}
@@ -181,7 +178,6 @@ const MapComponent = (props) => {
       <div className="map-below-map">
         {props.legendComponent(props)}
         {props.maxArea < props.totalArea ? 'Area too large, cannot save' : ''}
-        {makeCircleApprox}
       </div>
     </div>
   );
