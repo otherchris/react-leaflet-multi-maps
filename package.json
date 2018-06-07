@@ -5,7 +5,7 @@
   "main": "dist/MapsContainer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "BABEL_ENV=production babel src -d dist"
+    "build": "BABEL_ENV=production babel src -d dist && cp src/*.css dist"
   },
   "dependencies": {
     "leaflet": "1.2.0",

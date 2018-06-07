@@ -51,13 +51,15 @@ class MapsContainer extends React.Component {
   maps() {
     return map(this.props.singleMapProps, (p, i) => {
       return (
-        <MapComponent
-          {...this.props.allMapsProps}
-          {...p}
-          bindPoint={this.state.bindPoints[i]}
-          bindPointndex={i}
-          setBindPoint={this.setBindPoint.bind(this)}
-        />
+        <div className="map-wrapper">
+          <MapComponent
+            {...this.props.allMapsProps}
+            {...p}
+            bindPoint={this.state.bindPoints[i]}
+            bindPointndex={i}
+            setBindPoint={this.setBindPoint.bind(this)}
+          />
+        </div>
       );
     });
   }
@@ -66,7 +68,7 @@ class MapsContainer extends React.Component {
     const extraProps = {};
     each(this.props.extraProps, (p) => { extraProps[p] = this.props[p]; });
     return (
-      <div>
+      <div className="multi-map-container">
         {(this.maps())}
       </div>
     );

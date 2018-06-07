@@ -1,0 +1,121 @@
+.leaflet-draw-actions {
+  display: none !important;
+}
+
+.leaflet-draw-tooltip {
+  display: none !important;
+}
+.leaflet-container: {
+  position: absolute;
+  height: 600px;
+  width: 400px;
+}
+
+/* .my-div-icon: {
+ *   background-color: red;
+ *   color: green;
+ * } */
+
+.map-below-map {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.map-legend: {
+
+}
+
+.leaflet-editing-icon {
+  width: 10px !important;
+  height: 10px !important;
+  margin-left: -5px !important;
+  margin-top: -5px !important;
+  border-radius: 50%;
+
+}
+
+.map-class-for-styles-poly {
+  color: red;
+}
+
+.map-and-another {
+  background-color: green;
+}
+
+.map-class-for-styles-marker {
+  color: blue;
+}
+
+.map-toggle-x {
+  font-family: sans-serif;
+  font-size: 1rem;
+  align: right;
+  box-shadow: 0px 0px 4px 1px rgba(204,204,204,1);
+  margin-left: 10px;
+}
+
+.map-circle-approx {
+  line-height: 1;
+  width: 33.333%;
+}
+
+.map-circle-approx button {
+  font-size: 0.75rem;
+}
+
+.map-test-submit-style {
+  font-size: 3rem;
+}
+
+.map-btn-group {
+  position: absolute !important;
+  z-index: 1000;
+  bottom: 10px;
+  left: 10px;
+}
+
+.geosuggest {
+  position: absolute;
+  z-index:1000;
+  top: 10px;
+  left: 60px;
+  list-style: none;
+  cursor: pointer;
+}
+
+
+.geosuggest__suggests {
+  list-style: none;
+  z-index: 1001;
+  width: 100%;
+}
+
+.geosuggest__item {
+  z-index: 1010;
+  margin-left: -30px;
+}
+
+.geosuggest__suggests--hidden {
+  max-height: 0;
+  overflow: hidden;
+  border-width: 0;
+}
+.geosuggest__item--active {
+  background-color: #999;
+  color: #fff;
+}
+
+.maps-tiles: {
+  position: absolute !important;
+  z-index: 9999 !important;
+  bottom: 10px;
+  left: 10px;
+}
+
+.map-remove-poly-banner {
+  position: absolute !important;
+  left: 70%;
+  top: 80%;
+  z-index: 1000;
+
+}
