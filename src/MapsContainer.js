@@ -10,7 +10,7 @@ import MapComponent from './MapComponent';
 class MapsContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { bindPoint: 'm', mapState: { ...props } };
+    this.state = { bindPoints: map(props.singleMapProps, () => 'm'), mapState: { ...props } };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -28,9 +28,11 @@ class MapsContainer extends React.Component {
     return false;
   }
 
-  setBindPoint(m) {
-    if (this.state.bindPoint === 'm') {
-      this.setState({ bindPoint: m });
+  setBindPoint(m, index) {
+    if (this.state.bindPoints[index] === 'm') {
+      const new_bp = cloneDeep(this.state.bindPoints)
+      new_bp[index] = m
+      this.setState({ bindPoints: new_bp });
     }
   }
 
@@ -47,12 +49,13 @@ class MapsContainer extends React.Component {
   }
 
   maps() {
-    return map(this.props.singleMapProps, (p) => {
+    return map(this.props.singleMapProps, (p, i) => {
       return (
         <MapComponent
           {...this.props.allMapsProps}
           {...p}
-          bindPoint={this.state.bindPoint}
+          bindPoint={this.state.bindPoints[i]}
+          bindPointndex={i}
           setBindPoint={this.setBindPoint.bind(this)}
         />
       );

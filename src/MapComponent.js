@@ -147,7 +147,7 @@ const MapComponent = (props) => {
     <div>
       {openFeatureMessage}
       <Map
-        ref={m => { props.setBindPoint(m, props); }}
+        ref={m => { props.setBindPoint(m, props.bindPointIndex); }}
         style={{ height }}
         minZoom = {3}
         maxZoom = {18}
