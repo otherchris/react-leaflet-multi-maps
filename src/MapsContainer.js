@@ -15,13 +15,13 @@ class MapsContainer extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
-      !isEqual(nextProps.matches, this.props.matches) ||
-      !isEqual(nextProps.points, this.props.points) ||
-      !isEqual(nextProps.features, this.props.features) ||
-      !isEqual(nextProps.remove, this.props.remove) ||
-      !isEqual(nextProps.edit, this.props.edit) ||
-      !isEqual(nextProps.extraProps, this.props.extraProps) ||
-      !isEqual(nextProps.tileLayerProps, this.props.tileLayerProps)) {
+      !isEqual(nextProps.allMapsProps.matches, this.props.allMapsProps.matches) ||
+      !isEqual(nextProps.allMapsProps.points, this.props.allMapsProps.points) ||
+      !isEqual(nextProps.allMapsProps.features, this.props.allMapsProps.features) ||
+      !isEqual(nextProps.allMapsProps.remove, this.props.allMapsProps.remove) ||
+      !isEqual(nextProps.allMapsProps.edit, this.props.allMapsProps.edit) ||
+      !isEqual(nextProps.allMapsProps.extraProps, this.props.allMapsProps.extraProps) ||
+      !isEqual(nextProps.allMapsProps.tileLayerProps, this.props.allMapsProps.tileLayerProps)) {
       return true;
     }
     if (!isEqual(this.state.bindPoint, nextState.bindPoint)) return true;
@@ -72,7 +72,6 @@ class MapsContainer extends React.Component {
 
 MapsContainer.defaultProps = {
   onShapeChange: noop,
-  validateFunc: noop,
 };
 
 export default MapsContainer;

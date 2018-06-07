@@ -228,7 +228,6 @@ MapComponent.defaultProps = {
   bindPoint: {},
   center: defaultCenter,
   features: [],
-  featureValidator: () => [],
   height: 400,
   legendComponent: noop,
   makeCircleOn: false,
