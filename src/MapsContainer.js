@@ -1,4 +1,5 @@
 import React from 'react';
+import map from 'lodash/map';
 import omit from 'lodash/omit';
 import each from 'lodash/each';
 import noop from 'lodash/noop';
@@ -45,29 +46,25 @@ class MapsContainer extends React.Component {
     }
   }
 
+  maps() {
+    return map(this.props.singleMapProps, (p) => {
+      return (
+        <MapComponent
+          {...this.props.allMapsProps}
+          {...p}
+          bindPoint={this.state.bindPoint}
+          setBindPoint={this.setBindPoint.bind(this)}
+        />
+      );
+    });
+  }
+
   render() {
     const extraProps = {};
     each(this.props.extraProps, (p) => { extraProps[p] = this.props[p]; });
     return (
       <div>
-        <MapComponent
-          {...cloneDeep(omit(this.props, 'extraProps'))}
-          {...extraProps}
-          bindPoint={this.state.bindPoint}
-          setBindPoint={this.setBindPoint.bind(this)}
-        />
-        <MapComponent
-          {...cloneDeep(omit(this.props, 'extraProps'))}
-          {...extraProps}
-          bindPoint={this.state.bindPoint}
-          setBindPoint={this.setBindPoint.bind(this)}
-        />
-        <MapComponent
-          {...cloneDeep(omit(this.props, 'extraProps'))}
-          {...extraProps}
-          bindPoint={this.state.bindPoint}
-          setBindPoint={this.setBindPoint.bind(this)}
-        />
+        {(this.maps())}
       </div>
     );
   }
