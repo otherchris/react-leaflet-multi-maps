@@ -24,11 +24,12 @@ class MapsContainer extends React.Component {
       !isEqual(nextProps.allMapsProps.tileLayerProps, this.props.allMapsProps.tileLayerProps)) {
       return true;
     }
-    if (!isEqual(this.state.bindPoint, nextState.bindPoint)) return true;
+    if (!isEqual(this.state.bindPoints, nextState.bindPoints)) return true;
     return false;
   }
 
   setBindPoint(m, index) {
+    console.log("called setBindPoint with ", [m, index]);
     if (this.state.bindPoints[index] === 'm') {
       const new_bp = cloneDeep(this.state.bindPoints)
       new_bp[index] = m
@@ -56,7 +57,7 @@ class MapsContainer extends React.Component {
             {...this.props.allMapsProps}
             {...p}
             bindPoint={this.state.bindPoints[i]}
-            bindPointndex={i}
+            bindPointIndex={i}
             setBindPoint={this.setBindPoint.bind(this)}
           />
         </div>
