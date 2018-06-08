@@ -1,5 +1,6 @@
 import React from 'react';
 import map from 'lodash/map';
+import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 import each from 'lodash/each';
 import noop from 'lodash/noop';
@@ -29,12 +30,12 @@ class MapsContainer extends React.Component {
       return true;
     }
     if (!isEqual(this.state.viewBindPoints, nextState.viewBindPoints)) return true;
+    if (!isEqual(this.state.allMapsProps.center, nextState.allMapsProps.center)) return true;
     if (!isEqual(this.state.controlBindPoint, nextState.controlBindPoint)) return true;
     return false;
   }
 
   setViewBindPoint(m, index) {
-    console.log('call view bond point', index)
     if (this.state.viewBindPoints[index] === 'm') {
       const new_bp = cloneDeep(this.state.viewBindPoints)
       new_bp[index] = m
@@ -44,7 +45,6 @@ class MapsContainer extends React.Component {
   }
 
   setControlBindPoint(m) {
-    console.log('call control bond point', m)
     if (this.state.controlBindPoint === 'm') {
       this.setState({ controlBindPoint: m });
     }
@@ -64,22 +64,25 @@ class MapsContainer extends React.Component {
   }
 
   onMove() {
-    console.log('called onmove')
-    const center = this.state.controlBindPoints[index].leafletElement.getCenter();
+    const center = this.state.controlBindPoint.leafletElement.getCenter();
+    const zoom = this.state.controlBindPoint.leafletElement.getZoom();
     const amp = cloneDeep(this.state.allMapsProps);
     amp.center = center
-    console.log(amp)
+    amp.zoom = zoom
     this.setState({allMapsProps: amp})
   }
 
   controlMap() {
+    const allMapsProps = merge(this.state.allMapsProps, {features: this.props.allMapsProps.features})
     return (
       <div className="mao-wrapper control">
         <MapComponent
-          {...this.state.allMapsProps}
+          {...allMapsProps}
           {...this.state.controlMapsProps}
           bindPoint={this.state.controlBindPoint}
           setBindPoint={this.setControlBindPoint.bind(this)}
+          onMove={this.onMove.bind(this)}
+          edit={true}
         />
       </div>
     );

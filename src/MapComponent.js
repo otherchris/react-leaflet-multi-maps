@@ -153,6 +153,7 @@ const MapComponent = (props) => {
         maxZoom = {18}
         center = {center}
         zoom = {props.zoom || 9}
+        onMoveend={props.onMove}
       >
         {removePolyBanner}
         <FindPoint {...props} />
