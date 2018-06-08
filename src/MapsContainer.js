@@ -3,6 +3,7 @@ import map from 'lodash/map';
 import omit from 'lodash/omit';
 import each from 'lodash/each';
 import noop from 'lodash/noop';
+import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import MapComponent from './MapComponent';
@@ -10,7 +11,7 @@ import MapComponent from './MapComponent';
 class MapsContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { bindPoints: map(props.singleMapProps, () => 'm'), mapState: { ...props } };
+    this.state = { viewBindPoints: map(props.viewMapProps, () => 'm'), mapState: { ...props } };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -24,16 +25,16 @@ class MapsContainer extends React.Component {
       !isEqual(nextProps.allMapsProps.tileLayerProps, this.props.allMapsProps.tileLayerProps)) {
       return true;
     }
-    if (!isEqual(this.state.bindPoints, nextState.bindPoints)) return true;
+    if (!isEqual(this.state.viewBindPoints, nextState.viewBindPoints)) return true;
     return false;
   }
 
   setBindPoint(m, index) {
     console.log("called setBindPoint with ", [m, index]);
-    if (this.state.bindPoints[index] === 'm') {
-      const new_bp = cloneDeep(this.state.bindPoints)
+    if (this.state.viewBindPoints[index] === 'm') {
+      const new_bp = cloneDeep(this.state.viewBindPoints)
       new_bp[index] = m
-      this.setState({ bindPoints: new_bp });
+      this.setState({ viewBindPoints: new_bp });
     }
   }
 
@@ -47,16 +48,39 @@ class MapsContainer extends React.Component {
         el.classname = 'leaflet-draw-edit-remove';
       };
     }
+    this.setState({allMapsProps: this.props.allMapsProps});
   }
 
-  maps() {
-    return map(this.props.singleMapProps, (p, i) => {
+  onMove(index) {
+    console.log('called onmove')
+    const center = this.state.bindPoints[index].leafletElement.getCenter();
+    const amp = cloneDeep(this.state.allMapsProps);
+    amp.center = center
+    console.log(amp)
+    this.setState({allMapsProps: amp})
+  }
+
+  controlMap() {
+    return (
+      <div className="mao-wrapper control">
+        <MapComponent
+          {...this.state.allMapsProps}
+          {...this.state.controlMapsProps}
+          bindPoint={this.state.controlBindPoint}
+          setBindPoint={this.setBindPoint.bind(this)}
+        />
+      </div>
+    );
+  }
+
+  viewMaps() {
+    return map(this.props.viewMapProps, (p, i) => {
       return (
-        <div className="map-wrapper">
+        <div className="map-wrapper view">
           <MapComponent
-            {...this.props.allMapsProps}
+            {...this.state.allMapsProps}
             {...p}
-            bindPoint={this.state.bindPoints[i]}
+            bindPoint={this.state.viewBindPoints[i]}
             bindPointIndex={i}
             setBindPoint={this.setBindPoint.bind(this)}
           />
@@ -70,7 +94,8 @@ class MapsContainer extends React.Component {
     each(this.props.extraProps, (p) => { extraProps[p] = this.props[p]; });
     return (
       <div className="multi-map-container">
-        {(this.maps())}
+        {this.controlMap()}
+        {this.viewMaps()}
       </div>
     );
   }
