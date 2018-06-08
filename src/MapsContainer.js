@@ -11,7 +11,10 @@ import MapComponent from './MapComponent';
 class MapsContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { viewBindPoints: map(props.viewMapProps, () => 'm'), mapState: { ...props } };
+    this.state = {
+      viewBindPoints: map(props.viewMapProps, () => 'm'),
+      controlBindPoint: 'm',
+      mapState: { ...props } };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -26,15 +29,24 @@ class MapsContainer extends React.Component {
       return true;
     }
     if (!isEqual(this.state.viewBindPoints, nextState.viewBindPoints)) return true;
+    if (!isEqual(this.state.controlBindPoint, nextState.controlBindPoint)) return true;
     return false;
   }
 
-  setBindPoint(m, index) {
-    console.log("called setBindPoint with ", [m, index]);
+  setViewBindPoint(m, index) {
+    console.log('call view bond point', index)
     if (this.state.viewBindPoints[index] === 'm') {
       const new_bp = cloneDeep(this.state.viewBindPoints)
       new_bp[index] = m
+      if (m && m.leafletElement) m.leafletElement.dragging.disable();
       this.setState({ viewBindPoints: new_bp });
+    }
+  }
+
+  setControlBindPoint(m) {
+    console.log('call control bond point', m)
+    if (this.state.controlBindPoint === 'm') {
+      this.setState({ controlBindPoint: m });
     }
   }
 
@@ -51,9 +63,9 @@ class MapsContainer extends React.Component {
     this.setState({allMapsProps: this.props.allMapsProps});
   }
 
-  onMove(index) {
+  onMove() {
     console.log('called onmove')
-    const center = this.state.bindPoints[index].leafletElement.getCenter();
+    const center = this.state.controlBindPoints[index].leafletElement.getCenter();
     const amp = cloneDeep(this.state.allMapsProps);
     amp.center = center
     console.log(amp)
@@ -67,7 +79,7 @@ class MapsContainer extends React.Component {
           {...this.state.allMapsProps}
           {...this.state.controlMapsProps}
           bindPoint={this.state.controlBindPoint}
-          setBindPoint={this.setBindPoint.bind(this)}
+          setBindPoint={this.setControlBindPoint.bind(this)}
         />
       </div>
     );
@@ -82,7 +94,7 @@ class MapsContainer extends React.Component {
             {...p}
             bindPoint={this.state.viewBindPoints[i]}
             bindPointIndex={i}
-            setBindPoint={this.setBindPoint.bind(this)}
+            setBindPoint={this.setViewBindPoint.bind(this)}
           />
         </div>
       );
