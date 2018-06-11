@@ -155,7 +155,7 @@ const MapComponent = (props) => {
         onMoveend={props.onMove}
       >
         {removePolyBanner}
-        <FindPoint {...props} />
+        {props.hideGeo ? '' : (<FindPoint {...props} />)}
         <TileLayer
           url={tileLayerProps.url}
           attribution={tileLayerProps.attribution}

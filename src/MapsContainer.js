@@ -87,6 +87,7 @@ class MapsContainer extends React.Component {
             edit={false}
             zoom={this.state.zoom}
             center={this.state.center}
+            hideGeo={true}
           />
         </div>
       );
