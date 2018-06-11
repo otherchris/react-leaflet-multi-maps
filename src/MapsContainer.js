@@ -64,7 +64,12 @@ class MapsContainer extends React.Component {
   }
 
   controlMap() {
-    const allMapsProps = merge(this.state.allMapsProps, {features: this.props.allMapsProps.features})
+    const allMapsProps = merge(
+      this.state.allMapsProps,
+      {
+        features: this.props.allMapsProps.features,
+        remove: this.props.remove
+      })
     return (
       <div className="mao-wrapper control">
         <MapComponent
