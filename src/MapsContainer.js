@@ -20,17 +20,16 @@ class MapsContainer extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (
-      !isEqual(nextProps.allMapsProps.matches, this.props.allMapsProps.matches) ||
-      !isEqual(nextProps.allMapsProps.points, this.props.allMapsProps.points) ||
-      !isEqual(nextProps.allMapsProps.features, this.props.allMapsProps.features) ||
-      !isEqual(nextProps.allMapsProps.remove, this.props.allMapsProps.remove) ||
-      !isEqual(nextProps.allMapsProps.edit, this.props.allMapsProps.edit) ||
-      !isEqual(nextProps.allMapsProps.extraProps, this.props.allMapsProps.extraProps) ||
-      !isEqual(nextProps.allMapsProps.tileLayerProps, this.props.allMapsProps.tileLayerProps)) {
+      !isEqual(nextProps.points, this.props.points) ||
+      !isEqual(nextProps.features, this.props.features) ||
+      !isEqual(nextProps.remove, this.props.remove) ||
+      !isEqual(nextProps.edit, this.props.edit) ||
+      !isEqual(nextProps.extraProps, this.props.extraProps) ||
+      !isEqual(nextProps.tileLayerProps, this.props.tileLayerProps)) {
       return true;
     }
     if (!isEqual(this.state.viewBindPoints, nextState.viewBindPoints)) return true;
-    if (!isEqual(this.state.allMapsProps.center, nextState.allMapsProps.center)) return true;
+    if (!isEqual(this.state.center, nextState.center)) return true;
     if (!isEqual(this.state.controlBindPoint, nextState.controlBindPoint)) return true;
     return false;
   }
@@ -50,35 +49,26 @@ class MapsContainer extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({allMapsProps: this.props.allMapsProps});
-  }
-
   onMove() {
     const center = this.state.controlBindPoint.leafletElement.getCenter();
     const zoom = this.state.controlBindPoint.leafletElement.getZoom();
-    const amp = cloneDeep(this.state.allMapsProps);
-    amp.center = center
-    amp.zoom = zoom
-    this.setState({allMapsProps: amp})
+    this.setState({center, zoom})
   }
 
   controlMap() {
-    const allMapsProps = merge(
-      this.state.allMapsProps,
-      {
-        features: this.props.allMapsProps.features,
-        remove: this.props.remove
-      })
     return (
       <div className="mao-wrapper control">
         <MapComponent
-          {...allMapsProps}
+          features={this.props.features}
+          remove={this.props.remove}
+          onShapeChange={this.props.onShapeChange}
           {...this.state.controlMapsProps}
           bindPoint={this.state.controlBindPoint}
           setBindPoint={this.setControlBindPoint.bind(this)}
           onMove={this.onMove.bind(this)}
           edit={true}
+          zoom={this.state.zoom}
+          center={this.state.center}
         />
       </div>
     );
@@ -89,11 +79,14 @@ class MapsContainer extends React.Component {
       return (
         <div key={i} className="map-wrapper view">
           <MapComponent
-            {...this.state.allMapsProps}
+            features={this.props.features}
             {...p}
             bindPoint={this.state.viewBindPoints[i]}
             bindPointIndex={i}
             setBindPoint={this.setViewBindPoint.bind(this)}
+            edit={false}
+            zoom={this.state.zoom}
+            center={this.state.center}
           />
         </div>
       );
