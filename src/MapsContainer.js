@@ -51,15 +51,6 @@ class MapsContainer extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.edit) {
-      let el = document.querySelector('a.leaflet-draw-edit-remove');
-      if (!el) el = { onclick: '' };
-      el.onclick = () => {
-        const _p = cloneDeep(this.props);
-        _p.remove = !this.props.remove;
-        el.classname = 'leaflet-draw-edit-remove';
-      };
-    }
     this.setState({allMapsProps: this.props.allMapsProps});
   }
 
@@ -91,7 +82,7 @@ class MapsContainer extends React.Component {
   viewMaps() {
     return map(this.props.viewMapProps, (p, i) => {
       return (
-        <div className="map-wrapper view">
+        <div key={i} className="map-wrapper view">
           <MapComponent
             {...this.state.allMapsProps}
             {...p}
