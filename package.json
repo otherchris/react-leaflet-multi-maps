@@ -1,6 +1,6 @@
 {
   "name": "react-leaflet-multi-maps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Synchronize multiple map views (with controlled polygons)",
   "main": "dist/MapsContainer.js",
   "scripts": {
